@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.utils.safestring import mark_safe
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -23,6 +24,12 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<img src="{self.image.url}" width="auto" height="50px"/>')
+        else:
+            return 'No image'
+
 
 class Product(models.Model):
     STATUS = (
@@ -38,7 +45,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     amount = models.IntegerField(default=0)
     minamount = models.IntegerField()
-    detail = models.TextField()
+    detail = RichTextField() #models.TextField()
     slug = models.SlugField(null=False, unique=True)
     status = models.CharField(max_length=10, choices=STATUS)
     create_at = models.DateTimeField(auto_now_add=True)
@@ -46,3 +53,23 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<img src="{self.image.url}" width="auto" height="50px"/>')
+        else:
+            return 'No image'
+
+class Images(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, blank=True)
+    image = models.ImageField(upload_to='images/',null=False)
+
+    def __str__(self):
+        return self.title
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<img src="{self.image.url}" width="auto" height="50px"/>')
+        else:
+            return 'No image'

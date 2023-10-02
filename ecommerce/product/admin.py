@@ -1,12 +1,10 @@
 from django.contrib import admin
+from mptt.admin import DraggableMPTTAdmin
+
 from .models import Category, Product, Images
 
 
 # Register your models here.
-
-class CategoryAdmin(admin.ModelAdmin):
-    list_filter = ['title', 'description']
-
 
 class ProductImagesInline(admin.TabularInline):
     model = Images
@@ -16,7 +14,9 @@ class ProductImagesInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_filter = ['title', 'description']
     list_display = ['title', 'image_tag']
-    inlines = (ProductImagesInline, )
+    inlines = (ProductImagesInline,)
+    prepopulated_fields = {'slug': ('title', ) }
+
 
 class ImagesAdmin(admin.ModelAdmin):
     list_filter = ['title']
@@ -25,5 +25,20 @@ class ImagesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(
+    Category,
+    DraggableMPTTAdmin,
+    list_display=(
+        'tree_actions',
+        'indented_title',
+        'title',
+        'description',
+        # 'children_count'
+    ),
+    list_display_links=(
+        'indented_title',
+    ),
+    prepopulated_fields={'slug': ('title', )},
+    list_filter=('status', 'parent')
+)
 admin.site.register(Images, ImagesAdmin)

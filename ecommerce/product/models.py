@@ -1,17 +1,21 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 from ckeditor.fields import RichTextField
+from mptt.models import MPTTModel
+from mptt.fields import TreeForeignKey
+from django.urls import reverse, reverse_lazy
 
 # Create your models here.
 
-class Category(models.Model):
+
+class Category(MPTTModel):
     # Кортеж для панели администратора Для выбора статуса
     STATUS = (
         ('True', 'True'),
         ('False', 'False'),
     )
     # Для создания дерева категорий, мы хотим обозначить взаимосвязи между категориями
-    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
+    parent = TreeForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     keywords = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
@@ -21,8 +25,20 @@ class Category(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})
+
+    class MPTTMeta:
+        order_insertion_by = ['title']
+
     def __str__(self):
-        return self.title
+        full_path = [self.title]
+        cat = self.parent
+        while cat is not None:
+            full_path.append(cat.title)
+            cat = cat.parent
+
+        return ' / '.join(full_path[::-1])
 
     def image_tag(self):
         if self.image:
@@ -50,6 +66,9 @@ class Product(models.Model):
     status = models.CharField(max_length=10, choices=STATUS)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title

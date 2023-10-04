@@ -13,7 +13,7 @@ def index(request):
     category = Category.objects.all()
     context = {
         'setting': setting,
-        'category': category
+        'category': category,
     }
     return render(request, 'core/detail.html', context)
 

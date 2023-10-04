@@ -10,6 +10,4 @@ urlpatterns = [
     path('cart/', cart, name='cart'),
     path('checkoout/', checkout, name='checkout'),
     # path('shop/', shop, name='shop'),
-    path('category/', include('product.urls'), name='shop'),
-    path('product/', include('product.urls'), name='product'),
 ]

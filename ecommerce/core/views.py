@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .models import Setting, ContactForm, ContactMessage
-from product.models import Category
+from product.models import Category, Product
 
 
 # Create your views here.
@@ -10,9 +10,11 @@ from product.models import Category
 def index(request):
     setting = Setting.objects.filter(status=True).first()
     category = Category.objects.all()
+    product_slider = Product.objects.order_by('id').all()[:3]
     context = {
         'setting': setting,
-        'category': category
+        'category': category,
+        "product_slider": product_slider,
     }
     return render(request, 'core/index.html', context)
 

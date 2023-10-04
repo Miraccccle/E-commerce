@@ -1,4 +1,26 @@
+{% load mptt_tags %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+<!-- jQuery UI !-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script>
 
+      $(function() {
+        $("#query").autocomplete({
+          source: "/search_auto/",
+          select: function (event, ui) { //item selected
+            AutoCompleteSelectHandler(event, ui)
+          },
+          minLength: 1,
+        });
+      });
+
+      function AutoCompleteSelectHandler(event, ui)
+      {
+        var selectedObj = ui.item;
+      }
+
+    </script>
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">
@@ -37,13 +59,25 @@
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">{{setting.company}}</span></h1>
                 </a>
             </div>
+            <!--  Search  -->
             <div class="col-lg-6 col-6 text-left">
-                <form action="">
+                <form method="POST" action="/search/">
+                    {% csrf_token %}
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input id="query" name="query" type="text" class="form-control" placeholder="Search for products">
                         <div class="input-group-append">
+                            <select id="cat" name="cat" class="input-group-text">
+                                <option value="0">All Categories</option>
+                                    {% recursetree category %}
+                                        {% if node.is_leaf_node %}
+                                            <option value="{{node.id}}">{{node.title}}</option>
+                                        {% else %}
+                                            <optgroup label="{{node.title}}">{{children}}</optgroup>
+                                        {% endif %}
+                                    {% endrecursetree %}
+                            </select>
                             <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
+                                <button type="submit"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                     </div>

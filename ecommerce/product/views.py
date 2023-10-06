@@ -1,8 +1,10 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
 
 from core.models import Setting
-from .models import Category, Product, Images
+from .forms import CommentForm
+from .models import Category, Product, Images, Comment
 
 
 # Create your views here.
@@ -42,3 +44,21 @@ def product_detail(request, pk, slug):
         "images": images
     }
     return render(request, 'core/detail.html', context)
+
+def add_comments(request, pk):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            data = Comment()
+            data.rate = form.cleaned_data['rate']
+            data.subject = form.cleaned_data['subject']
+            data.text = form.cleaned_data['text']
+            data.ip = request.META.get('REMOTE_ADDR')
+            data.product_id = pk
+            data.user_id = request.user.id
+            data.save()
+            messages.success(request, 'Your comment is added!')
+        else:
+            print(form.errors)
+    return HttpResponseRedirect(url)

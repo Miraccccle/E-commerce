@@ -21,9 +21,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home', include('core.urls')),
+    path('', include('core.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('', include('product.urls')),
+    path('p/', include('product.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

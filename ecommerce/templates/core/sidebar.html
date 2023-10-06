@@ -9,7 +9,7 @@
         {% recursetree category %}
             {% if not node.is_leaf_node %}
                 <div class="nav-item dropdown">
-                    <a href="/category/{{ node.id }}/{{node.slug}}/" class="nav-link" data-toggle="dropdown">{{ node.title }} <i class="fa fa-angle-down float-right mt-1"></i></a>
+                    <a href="/p/category/{{ node.id }}/{{node.slug}}/" class="nav-link" data-toggle="dropdown">{{ node.title }} <i class="fa fa-angle-down float-right mt-1"></i></a>
                     <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
 <!--                                            <a href="/category/{{ node.id }}/{{node.slug}}/">-->
                             {{ children }}
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             {% else %}
-                <a href="/category/{{ node.id }}/{{node.slug}}/" class="nav-item nav-link">{{ node.title }}</a>
+                <a href="/p/category/{{ node.id }}/{{node.slug}}/" class="nav-item nav-link">{{ node.title }}</a>
             {% endif %}
         {% endrecursetree %}
     </div>

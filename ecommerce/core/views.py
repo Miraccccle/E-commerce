@@ -12,10 +12,12 @@ def index(request):
     setting = Setting.objects.filter(status=True).first()
     category = Category.objects.all()
     product_slider = Product.objects.order_by('id').all()[:3]
+    products = Product.objects.order_by('id').all()
     context = {
         'setting': setting,
         'category': category,
         "product_slider": product_slider,
+        "products": products,
     }
     return render(request, 'core/index.html', context)
 

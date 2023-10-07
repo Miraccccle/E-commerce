@@ -27,7 +27,7 @@ class ImagesAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_filter = ['rate', 'status', 'user', 'text', 'ip']
     list_display = ['product', 'subject', 'rate', 'status']
-    readonly_fields = ['product', 'subject', 'rate', 'status', 'user', 'ip']
+    readonly_fields = ['product', 'subject', 'rate', 'text', 'user', 'ip']
 
 
 admin.site.register(Comment, CommentAdmin)

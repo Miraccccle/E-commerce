@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Avg, Count
 from django.utils.safestring import mark_safe
 from ckeditor.fields import RichTextField
 from mptt.models import MPTTModel
@@ -80,6 +81,15 @@ class Product(models.Model):
             return mark_safe(f'<img src="{self.image.url}" width="auto" height="50px"/>')
         else:
             return 'No image'
+
+    def average_rating(self):
+        avg_rate = Comment.objects.filter(product_id=self, status='True').aggregate(average=Avg('rate'))
+        avg_rate = avg_rate['average']
+        if avg_rate is not None:
+            return round(float(avg_rate), 1)
+        else:
+            return 0.0
+
 
 
 class Images(models.Model):

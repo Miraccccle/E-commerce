@@ -37,13 +37,18 @@ def product_detail(request, pk, slug):
     category = Category.objects.all()
     images = Images.objects.filter(product_id=pk)
     product = get_object_or_404(Product, id=pk)
+    comments = Comment.objects.filter(product_id=pk)
+    rating = [1, 2, 3, 4, 5]
     context = {
         'setting': setting,
         'category': category,
         "product": product,
-        "images": images
+        "images": images,
+        "comments": comments,
+        "rating": rating,
     }
     return render(request, 'core/detail.html', context)
+
 
 def add_comments(request, pk):
     url = request.META.get('HTTP_REFERER')

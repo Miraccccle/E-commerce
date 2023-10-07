@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'mptt',
     # Apps
+    'order.apps.OrderConfig',
     'core.apps.CoreConfig',
     'product.apps.ProductConfig',
 ]

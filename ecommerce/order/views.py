@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+
+from core.models import Setting
+from product.models import Category
 from .models import ShopCart
 from .forms import ShopCartForm
 from django.contrib.auth.decorators import login_required
@@ -52,3 +55,20 @@ def addtoshopcart(request, pk):
             data.save()
             messages.success(request, 'Товар добавлен в корзину')
         return HttpResponseRedirect(url)
+
+
+def shopcart(request):
+    setting = Setting.objects.filter(status=True).first()
+    category = Category.objects.all()
+    current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
+    total = 0
+    for sc in current_shopcart:
+        total += sc.product.price * sc.quantity
+
+    context = {
+        'setting': setting,
+        'category': category,
+        'shopcart': current_shopcart,
+        'total': total
+    }
+    return render(request, 'core/cart.html', context)

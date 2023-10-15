@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 
 from core.models import Setting
+from order.models import ShopCart
 from .forms import CommentForm
 from .models import Category, Product, Images, Comment
 
@@ -13,9 +14,14 @@ from .models import Category, Product, Images, Comment
 def index(request):
     setting = Setting.objects.filter(status=True).first()
     category = Category.objects.all()
+    current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
+    total = 0
+    for sc in current_shopcart:
+        total += sc.product.price * sc.quantity
     context = {
         'setting': setting,
         'category': category,
+        "shopcart": current_shopcart
     }
     return render(request, 'core/detail.html', context)
 
@@ -24,10 +30,15 @@ def category_products(request, pk, slug):
     setting = Setting.objects.filter(status=True).first()
     category = Category.objects.all()
     products = Product.objects.filter(category_id=pk)
+    current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
+    total = 0
+    for sc in current_shopcart:
+        total += sc.product.price * sc.quantity
     context = {
         'setting': setting,
         'category': category,
         'products': products,
+        "shopcart": current_shopcart,
     }
     return render(request, 'core/shop.html', context)
 
@@ -39,6 +50,10 @@ def product_detail(request, pk, slug):
     product = get_object_or_404(Product, id=pk)
     comments = Comment.objects.filter(product_id=pk)
     rating = [1, 2, 3, 4, 5]
+    current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
+    total = 0
+    for sc in current_shopcart:
+        total += sc.product.price * sc.quantity
     context = {
         'setting': setting,
         'category': category,
@@ -46,6 +61,7 @@ def product_detail(request, pk, slug):
         "images": images,
         "comments": comments,
         "rating": rating,
+        "shopcart": current_shopcart,
     }
     return render(request, 'core/detail.html', context)
 

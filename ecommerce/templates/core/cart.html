@@ -59,7 +59,7 @@
                                 </div>
                             </td>
                             <td class="align-middle">${{sc.amount}}</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle"><a href="/order/shopcart/deleteitem/{{ sc.id }}" class="btn btn-sm btn-primary" onclick="return confirm('Are you sure delete? {{ sc.product.title }} from shopcart')"><i class="fa fa-times"></i></a></td>
                         </tr>
 
                         {% endfor %}
@@ -80,14 +80,14 @@
                         <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">$150</h6>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$10</h6>
-                        </div>
+<!--                        <div class="d-flex justify-content-between mb-3 pt-1">-->
+<!--                            <h6 class="font-weight-medium">Subtotal</h6>-->
+<!--                            <h6 class="font-weight-medium">$150</h6>-->
+<!--                        </div>-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <h6 class="font-weight-medium">Shipping</h6>-->
+<!--                            <h6 class="font-weight-medium">$10</h6>-->
+<!--                        </div>-->
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">

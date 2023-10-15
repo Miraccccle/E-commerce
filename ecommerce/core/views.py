@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+
+from order.models import ShopCart
 from .models import Setting, ContactForm, ContactMessage
 from product.models import Category, Product
 import json
@@ -13,11 +15,16 @@ def index(request):
     category = Category.objects.all()
     product_slider = Product.objects.order_by('id').all()[:3]
     products = Product.objects.order_by('id').all()
+    current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
+    total = 0
+    for sc in current_shopcart:
+        total += sc.product.price * sc.quantity
     context = {
         'setting': setting,
         'category': category,
         "product_slider": product_slider,
         "products": products,
+        "shopcart": current_shopcart
     }
     return render(request, 'core/index.html', context)
 
@@ -39,10 +46,15 @@ def contact(request):
             messages.success(request, 'Message Send')
             return HttpResponseRedirect('/contact/')
     form = ContactForm
+    current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
+    total = 0
+    for sc in current_shopcart:
+        total += sc.product.price * sc.quantity
     context = {
         'setting': setting,
         'form': form,
         'category': category,
+        "shopcart": current_shopcart
     }
     return render(request, 'core/contact.html', context)
 
@@ -59,13 +71,17 @@ def search(request):
             products = Product.objects.filter(title__icontains=query)
         else:
             products = Product.objects.filter(title__icontains=query, category_id=catId)
-
+    current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
+    total = 0
+    for sc in current_shopcart:
+        total += sc.product.price * sc.quantity
     context = {
         'setting': setting,
         'category': category,
         "product_slider": product_slider,
         'products': products,
         'query': query,
+        "shopcart": current_shopcart,
     }
     return render(request, 'core/search_results.html', context)
 

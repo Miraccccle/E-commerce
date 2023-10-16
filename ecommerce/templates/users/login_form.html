@@ -1,0 +1,51 @@
+{% extends 'core/layout.html' %}
+{% load static %}
+{% block title %} Authentication {% endblock %}
+
+{% block sidebar %}{% include 'core/sidebar.html' %}{% endblock %}
+
+{% block content %}
+<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="container">
+			<ul class="breadcrumb">
+				<li><a href="{% url 'core:index' %}">Home</a></li>
+				<li class="active">Authentication </li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- section -->
+	<div class="section">
+		{% if messages %}
+			{% for message in messages %}
+			<div class="alert alert-info" role="alert">
+				{{ message }}
+			</div>
+			{% endfor %}
+		{% endif %}
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="col-md-6">
+				<div class="row">
+					<form id="checkout-form" class="clearfix" method="post">
+						{% csrf_token %}
+						<div class="form-group">
+							<input class="input" type="text" name="username" placeholder="Enter username">
+						</div>
+						<div class="form-group">
+							<input class="input" type="password" name="password" placeholder="Enter your password">
+						</div>
+						<button class="primary-btn" type="submit"> Login </button>
+					</form>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+{% endblock %}
+{% block footer %}{% include 'core/footer.html' %}{% endblock %}

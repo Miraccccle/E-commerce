@@ -1,0 +1,73 @@
+{% extends 'core/layout.html' %}
+{% load static %}
+{% block title %}Registration {% endblock %}
+
+{% block sidebar %}{% include 'core/sidebar.html' %}{% endblock %}
+
+{% block content %}
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'core:index' %}">Home</a></li>
+            <li class="active">Registration</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- section -->
+<div class="section">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="col-md-6">
+            <div class="row">
+                <form id="checkout-form" class="clearfix" method="post">
+                    {% csrf_token %}
+                    <h4 class="footer-header">Username:</h4>
+                    <input class="input" type="text" name="username" maxlength="30" autofocus required id="id_username">
+                    <br>
+                    <h4 class="footer-header">Email:</h4>
+                    <input class="input" type="email" name="email" maxlength="200" required id="id_email">
+                            <br>
+                    <h4 class="footer-header">First name: :</h4>
+                    <input class="input" type="text" name="first_name" maxlength="150" required id="id_first_name">
+                    <br>
+                    <h4 class="footer-header">Last name: :</h4>
+
+                    <input class="input" type="text" name="last_name" maxlength="150" required id="id_last_name">
+                    <br>
+                    <h4 class="footer-header">Password:</h4>
+                    <input class="input" type="password" name="password1" autocomplete="new-password" required
+                           id="id_password1">
+                    <br>
+
+                    <span class="helptext"><ul><li>Your password can’t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can’t be a commonly used password.</li><li>Your password can’t be entirely numeric.</li></ul></span>
+                    <br>
+
+                    <h4 class="footer-header">Password confirmation:</h4>
+                    <input class="input" type="password" name="password2" autocomplete="new-password" required
+                           id="id_password2">
+
+                    <br>
+                    <span class="helptext">Enter the same password as before, for verification.</span>
+<br>
+                    <button class="primary-btn" type="submit"> Register</button>
+                </form>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+{% endblock %}
+{% block footer %}{% include 'core/footer.html' %}{% endblock %}

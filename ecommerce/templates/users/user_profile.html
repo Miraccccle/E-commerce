@@ -1,0 +1,36 @@
+{% extends 'core/layout.html' %}
+{% load static %}
+{% block title %} 9 Bit - about{% endblock %}
+
+{% block sidebar %}{% include 'core/sidebar.html' %}{% endblock %}
+
+{% block content %}
+<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="container">
+			<ul class="breadcrumb">
+				<li><a href="{% url 'core:index' %}">Home</a></li>
+				<li class="active">About us</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="col-md-3">
+				{% include 'users/user_panel.html' %}
+			</div>
+			<div class="col-md-9">
+				<h1> Тут будет информация профиля </h1>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+{% endblock %}
+{% block footer %}{% include 'core/footer.html' %}{% endblock %}

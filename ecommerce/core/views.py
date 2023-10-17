@@ -63,14 +63,15 @@ def search(request):
     setting = Setting.objects.filter(status=True).first()
     category = Category.objects.all()
     product_slider = Product.objects.order_by('id').all()[:3]
+    products = Product.objects.all()
     if request.method == 'POST':
         query = request.POST['query']
         catId = int(request.POST['cat'])
-        print(request.POST, query, catId)
         if catId == 0:
             products = Product.objects.filter(title__icontains=query)
         else:
             products = Product.objects.filter(title__icontains=query, category_id=catId)
+
     current_shopcart = ShopCart.objects.filter(user_id=request.user.id)
     total = 0
     for sc in current_shopcart:
